@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org/" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: head"></head>
 <body>
+<h1 th:text="${title}">Default Title</h1>
 
-<form method="post">
-    <select th:name={cheeses}>
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option>
-    </select>
-    <br><br>
-    <input type="submit" value="test">
+<p>
+    <nav th:replace="fragments :: navigation"></nav>
+</p>
+
+<p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
+
+<form method="POST" th:if="${cheeses} and ${cheeses.size()}">
+    <table>
+        <tr th:each ="cheese : ${cheeses}"><td th:text="${cheese.key}"></td><td th:text="${cheese.value}"></td><td><input type="checkbox" name="cheese" th:value="${cheese.key}">Delete?</input></td></tr>
+    </table>
+    <input type="submit" value="Remove cheeses" />
 </form>
 
 </body>

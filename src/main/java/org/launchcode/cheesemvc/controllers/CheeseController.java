@@ -17,45 +17,50 @@ import java.util.HashMap;
 @RequestMapping("cheese")
 public class CheeseController {
 
-    HashMap<String, String> cheeses = new HashMap<>();
-
+    static HashMap<String, String> cheeses = new HashMap<String, String>();
 
     //Request path = /cheese
     @RequestMapping(value = "")
     public String index(Model model) {
 
         model.addAttribute("cheeses", cheeses);
-        //model.addAttribute("cheeseName", cheeseName);
-        //model.addAttribute("cheeseDescription", cheeseDescription);
-        model.addAttribute("title", "My Cheese");
+        model.addAttribute("title", "My Cheeses");
         return "cheese/index";
     }
 
+    // Request path: cheese/add
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddCheeseForm(Model model) {
+
         model.addAttribute("title", "Add Cheese");
-        //model.addAttribute("cheeseName", cheeseName);
-        //model.addAttribute("cheeseDescription", cheeseDescription);
         return "cheese/add";
     }
 
+    // Request path: cheese/add
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(Model model, @RequestParam String cheeseName, @RequestParam String cheeseDescription) {
-        model.addAttribute("cheeseName", cheeseName);
-        model.addAttribute("cheeseDescription", cheeseDescription);
+    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription) {
+
         cheeses.put(cheeseName, cheeseDescription);
+
+        // Redirect to cheese/
         return "redirect:";
     }
 
+    // Request path: cheese/remove
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String displayRemoveCheeseForm(Model model) {
-        model.addAttribute("title", "Add Cheese");
-        return "cheese/add";
+        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("title", "Remove Cheese");
+        return "cheese/remove";
     }
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
-    public String processRemoveCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription) {
-        cheeses.put(cheeseName, cheeseDescription);
+    public String processRemoveCheeseForm(@RequestParam ArrayList<String> cheese) {
+
+        for (String c : cheese) {
+            cheeses.remove(c);
+        }
+        // Redirect to cheese/
         return "redirect:";
     }
 }
